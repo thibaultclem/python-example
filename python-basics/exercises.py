@@ -56,23 +56,28 @@ else:
     grade = outm
 print grade
 
-scoreI = raw_input("Enter Score: ")
-try:
-    score = float(scoreI)
-    if score < 0.0:
-        grade = "The score is out of range"
-    elif score < 0.6:
-        grade = "F"
-    elif score < 0.7:
-        grade = "D"
-    elif score < 0.8:
-        grade = "C"
-    elif score < 0.9:
-        grade = "B"
-    elif score <= 1.0:
-        grade = "A"
+
+# Function
+def computepay(h,r):
+    weekHourLimit = 40
+    bonusHourLimit = 1.5
+    if hrs <= weekHourLimit:
+        pay = h * r
     else:
-        grade = "The score is out of range"
-    print grade
-except Exception as e:
-    print "The score is out of range"
+        pay = weekHourLimit * r + (h - weekHourLimit) * r * bonusHourLimit
+    return pay
+
+try:
+    hrsI = raw_input("Enter Hours:")
+    hrs = float(hrsI)
+except:
+    print "This is not a number"
+
+try:
+    rateI = raw_input("Enter Rate:")
+    rate = float(rateI)
+except:
+    print "This is not a number"
+
+p = computepay(hrs,rate)
+print p
