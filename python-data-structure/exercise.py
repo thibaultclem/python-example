@@ -2,6 +2,7 @@
 #through the file, and print the contents of the file in upper case.
 # Use words.txt as the file name
 fname = raw_input("Enter file name: ")
+if len(fname) < 1 : fname = "mbox-short.txt"
 fh = open(fname)
 f = fh.read()
 fup = f.upper()
@@ -15,6 +16,7 @@ print fup.rstrip()
 count = 0
 total = 0
 fname = raw_input("Enter file name: ")
+if len(fname) < 1 : fname = "mbox-short.txt"
 fh = open(fname)
 for line in fh:
     if not line.startswith("X-DSPAM-Confidence:") : continue
@@ -41,6 +43,7 @@ for line in fhand:
 #in the list and if not append it to the list. When the program completes, sort
 #and print the resulting words in alphabetical order.
 fname = raw_input("Enter file name: ")
+if len(fname) < 1 : fname = "mbox-short.txt"
 fh = open(fname)
 lst = list()
 for line in fh:
@@ -69,3 +72,33 @@ for line in fh:
     words = line.split()
     print words[1]
 print "There were", count, "lines in the file with From as the first word"
+
+
+#Write a program to read through the mbox-short.txt and figure out who has the
+#sent the greatest number of mail messages. The program looks for 'From ' lines
+#and takes the second word of those lines as the person who sent the mail.
+#The program creates a Python dictionary that maps the sender's mail address to
+#a count of the number of times they appear in the file. After the dictionary
+#is produced, the program reads through the dictionary using a maximum loop to
+#find the most prolific committer.
+senders = dict()
+
+fname = raw_input("Enter file name: ")
+if len(fname) < 1 : fname = "mbox-short.txt"
+fh = open(fname)
+
+for line in fh:
+    line = line.rstrip()
+    if not line.startswith("From "): continue
+    words = line.split()
+    sender = words[1]
+    senders[sender] = senders.get(sender, 0) + 1
+
+bigSender = None
+bigCount = None
+for sender,nbr in senders.items():
+    if bigCount is None or bigCount < nbr:
+        bigCount = nbr
+        bigSender = sender
+
+print bigSender,bigCount
