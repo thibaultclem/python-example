@@ -102,3 +102,27 @@ for sender,nbr in senders.items():
         bigSender = sender
 
 print bigSender,bigCount
+
+
+# Write a program to read through the mbox-short.txt and figure out the
+#distribution by hour of the day for each of the messages. You can pull the
+#hour out from the 'From ' line by finding the time and then splitting the
+#string a second time using a colon.
+#From stephen.marquard@uct.ac.za Sat Jan  5 09:14:16 2008
+hours = dict()
+
+fname = raw_input("Enter file name: ")
+if len(fname) < 1 : fname = "mbox-short.txt"
+fh = open(fname)
+
+for line in fh:
+    line = line.rstrip()
+    if not line.startswith("From "): continue
+    words = line.split()
+    time = words[5]
+    s = time.find(':')
+    hour = time[:s]
+    hours[hour] = hours.get(hour,0) + 1
+    
+for hr,nb in sorted(hours.items()):
+    print hr,nb
