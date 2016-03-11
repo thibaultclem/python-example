@@ -51,6 +51,7 @@ print 'Sum',total
 
 
 ## EXERCISE 3 - parsing HTML
+
 url = raw_input('Enter URL: ')
 if len(url) < 1 : url = 'http://python-data.dr-chuck.net/known_by_Aleem.html'
 count = raw_input('Enter count: ')
@@ -69,3 +70,33 @@ while counter <= count:
     tags = soup('a')
     url = tags[position-1].get('href', None)
     counter += 1
+
+
+## EXERCISE 4 - parsing XML
+
+import urllib
+import xml.etree.ElementTree as ET
+
+## Get XML
+url = raw_input('Enter URL: ')
+if len(url) < 1 : url = 'http://python-data.dr-chuck.net/comments_252431.xml'
+print 'Retrieving',url
+data = urllib.urlopen(url).read()
+print 'Retrieved',len(data),'characters'
+
+# Parsing string to XML
+tree = ET.fromstring(data)
+
+## Init integers
+total = 0
+
+# Get all counts elements
+counts = tree.findall('.//count')
+print 'Count:',len(counts)
+
+#Do the sum
+for nb in counts:
+    total = total + int(nb.text)
+
+# Print sum of comments
+print 'Sum:',total
