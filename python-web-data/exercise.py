@@ -100,3 +100,64 @@ for nb in counts:
 
 # Print sum of comments
 print 'Sum:',total
+
+
+## EXERCISE 5 - parsing JSON
+
+import urllib
+import json
+
+url = raw_input('Enter URL: ')
+if len(url) < 1 : url = 'http://python-data.dr-chuck.net/comments_252435.json'
+print 'Retrieving',url
+data = urllib.urlopen(url).read()
+print 'Retrieved',len(data),'characters'
+
+# Parsing string to JSON
+js = json.loads(str(data))
+
+## Init integers
+total = 0
+
+# Get all comments elements
+comments = js['comments']
+print 'Count:',len(comments)
+
+#Do the sum
+for item in comments:
+    total = total + int(item['count'])
+
+# Print sum of comments
+print 'Sum:',total
+
+
+## EXERCISE 6 - parsing JSON from REST API
+
+import urllib
+import json
+
+serviceurl = 'http://python-data.dr-chuck.net/geojson?'
+
+while True:
+    address = raw_input('Enter location: ')
+    if len(address) < 1 : break
+
+    url = serviceurl + urllib.urlencode({'sensor':'false', 'address': address})
+    print 'Retrieving', url
+    # Call to the server
+    uh = urllib.urlopen(url)
+    # Call to the API to retrieve datas
+    data = uh.read()
+    print 'Retrieved',len(data),'characters'
+
+    # Parse data to JSON
+    try: js = json.loads(str(data))
+    except: js = None
+    if 'status' not in js or js['status'] != 'OK':
+        print '==== Failure To Retrieve ===='
+        print data
+        continue
+
+    # Get lat and lng of the first result
+    place_id = js["results"][0]["place_id"]
+    print 'Place id',place_id
